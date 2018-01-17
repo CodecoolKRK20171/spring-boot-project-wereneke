@@ -18,11 +18,10 @@ public class Book {
     private String title;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties("book")
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
-    @JsonIgnore
+//    @JsonIgnore
     private Boolean archived = false;
 
     public Book() {}

@@ -14,21 +14,28 @@ public class AuthorService implements Service<Author> {
     }
 
     @Override
-    public void create(Author author) {
-        if (author.getId() == null) {
-            this.authorRepository.save(author);
-        }
+    public Author create(Author author) {
+
+            return this.authorRepository.save(author);
     }
 
     @Override
-    public void update(Author author) {
+    public Author update(Integer id, Author newValues) throws NoSuchIdException {
 
-        if (author.getId() != null) this.authorRepository.save(author);
+        Author author = this.authorRepository.findOne(id);
+        if (author == null) throw new NoSuchIdException();
+        author = newValues;
+        return this.authorRepository.save(author);
     }
 
     @Override
-    public void delete(Author author) {
+    public void delete(Integer id) throws NoSuchIdException {
+
+        if (!this.authorRepository.exists(id)) throw new NoSuchIdException();
+
+        Author author = this.authorRepository.findOne(id);
         this.authorRepository.delete(author);
+
     }
 
     @Override
@@ -40,7 +47,7 @@ public class AuthorService implements Service<Author> {
     }
 
     @Override
-    public Iterable<Author> findAll() {
+    public Iterable<Author> findAll(boolean arch) {
         return this.authorRepository.findAll();
     }
 }

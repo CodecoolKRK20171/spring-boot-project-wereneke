@@ -4,6 +4,9 @@ import com.codecool.wereneke.library.common.NoSuchIdException;
 import com.codecool.wereneke.library.common.Service;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
 public class BookService implements Service<Book> {
 
@@ -14,30 +17,60 @@ public class BookService implements Service<Book> {
     }
 
     @Override
-    public void create(Book book) {
-        this.bookRepository.save(book);
+    public Book create(Book book) {
+
+        return this.bookRepository.save(book);
     }
 
     @Override
-    public void update(Book book) {
+    public Book update(Integer id, Book newValues) throws NoSuchIdException{
 
-        this.bookRepository.save(book);
+        Book book = this.bookRepository.findOne(id);
+        if (book.getArchived()) throw new NoSuchIdException();
+        book = newValues;
+        return this.bookRepository.save(book);
     }
 
     @Override
-    public void delete(Book book) {
-        this.bookRepository.delete(book.getId());
+    public void delete(Integer id) throws NoSuchIdException {
+        if (!this.bookRepository.exists(id)) throw new NoSuchIdException();
+        if (this.bookRepository.findOne(id).getArchived()) throw new NoSuchIdException();
+        this.bookRepository.delete(id);
     }
 
     @Override
     public Book findOne(Integer id) throws NoSuchIdException {
         Book book = this.bookRepository.findOne(id);
         if (book == null) throw new NoSuchIdException();
+        if (book.getArchived()) throw new NoSuchIdException();
         return book;
     }
 
     @Override
-    public Iterable<Book> findAll() {
-        return this.bookRepository.findAll();
+    public Iterable<Book> findAll(boolean archived) {
+
+        Iterable<Book> allBooks = this.bookRepository.findAll();
+        Set<Book> archivedBooks = new HashSet<>();
+        Set<Book> unarchivedBooks = new HashSet<>();
+
+        for (Book book: allBooks) {
+            if (book.getArchived()){
+                archivedBooks.add(book);
+            }
+            else unarchivedBooks.add(book);
+        }
+
+        if (archived) return archivedBooks;
+        return unarchivedBooks;
     }
+
+    public Book archive(Integer id) throws NoSuchIdException {
+
+        Book book = this.bookRepository.findOne(id);
+        if (book == null) throw new NoSuchIdException();
+        book.setArchived(true);
+        this.bookRepository.save(book);
+        return book;
+    }
+
 }

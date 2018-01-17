@@ -20,17 +20,31 @@ public class AuthorController implements Controller<Author> {
     @Override
     @GetMapping("")
     public Iterable<Author> index() {
-        return this.authorService.findAll();
+        return this.authorService.findAll(false);
     }
 
+    @Override
     @GetMapping("/{id}")
     public Author show(@PathVariable Integer id) throws NoSuchIdException {
         return (Author) this.authorService.findOne(id);
     }
 
+    @Override
     @PostMapping("")
     public Author create(@RequestBody Author author) {
         this.authorService.create(author);
         return author;
+    }
+
+    @Override
+    @PutMapping(path = "/{id}")
+    public Author update(@PathVariable Integer id, @RequestBody Author author) throws NoSuchIdException {
+        return (Author) this.authorService.update(id, author);
+    }
+
+    @Override
+    @DeleteMapping(path = "/{id}")
+    public void delete(@PathVariable Integer id) throws NoSuchIdException {
+        this.authorService.delete(id);
     }
 }
