@@ -28,6 +28,7 @@ public class BookService implements Service<Book> {
         Book book = this.bookRepository.findOne(id);
         if (book.getArchived()) throw new NoSuchIdException();
         book = newValues;
+        book.setId(id);
         return this.bookRepository.save(book);
     }
 

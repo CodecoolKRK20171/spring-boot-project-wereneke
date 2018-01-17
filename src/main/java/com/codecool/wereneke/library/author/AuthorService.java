@@ -25,6 +25,7 @@ public class AuthorService implements Service<Author> {
         Author author = this.authorRepository.findOne(id);
         if (author == null) throw new NoSuchIdException();
         author = newValues;
+        author.setId(id);
         return this.authorRepository.save(author);
     }
 
