@@ -1,9 +1,8 @@
 package com.codecool.wereneke.library.book;
 
+import com.codecool.wereneke.library.common.NoSuchIdException;
 import com.codecool.wereneke.library.common.Service;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class BookService implements Service<Book> {
@@ -15,27 +14,30 @@ public class BookService implements Service<Book> {
     }
 
     @Override
-    public void create(Book obj) {
-
+    public void create(Book book) {
+        this.bookRepository.save(book);
     }
 
     @Override
-    public void update(Book obj) {
+    public void update(Book book) {
 
+        this.bookRepository.save(book);
     }
 
     @Override
-    public void delete(Book obj) {
-
+    public void delete(Book book) {
+        this.bookRepository.delete(book.getId());
     }
 
     @Override
-    public Book findOne(int id) {
-        return null;
+    public Book findOne(Integer id) throws NoSuchIdException {
+        Book book = this.bookRepository.findOne(id);
+        if (book == null) throw new NoSuchIdException();
+        return book;
     }
 
     @Override
-    public List<Book> findAll() {
-        return null;
+    public Iterable<Book> findAll() {
+        return this.bookRepository.findAll();
     }
 }

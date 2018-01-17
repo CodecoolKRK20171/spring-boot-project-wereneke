@@ -1,6 +1,8 @@
 package com.codecool.wereneke.library.author;
 
 import com.codecool.wereneke.library.book.Book;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -15,18 +17,21 @@ public class Author {
     private Integer id;
 
     @NotEmpty
-    private String fristName;
+    private String firstName;
 
     @NotEmpty
     private String lastName;
 
-    @ManyToMany(mappedBy = "authors")
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER, mappedBy = "author", orphanRemoval = true)
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 
-    public Author(String fristName, String lastName) {
-        this.fristName = fristName;
+    public Author(String firstName, String lastName) {
+        this.firstName = firstName;
         this.lastName = lastName;
     }
+
+    public Author() {}
 
     public Integer getId() {
         return id;
@@ -36,12 +41,12 @@ public class Author {
         this.id = id;
     }
 
-    public String getFristName() {
-        return fristName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFristName(String fristName) {
-        this.fristName = fristName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -56,6 +61,8 @@ public class Author {
         return books;
     }
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("author")
     public void setBooks(Set<Book> books) {
         this.books = books;
     }

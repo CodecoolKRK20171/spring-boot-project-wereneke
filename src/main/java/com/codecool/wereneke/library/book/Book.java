@@ -1,13 +1,11 @@
 package com.codecool.wereneke.library.book;
 
 import com.codecool.wereneke.library.author.Author;
-import com.codecool.wereneke.library.category.Category;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Book {
@@ -15,20 +13,19 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @NotEmpty
     private String title;
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "book_author", joinColumns = {@JoinColumn(name = "book_id")}, inverseJoinColumns = {@JoinColumn(name = "author_id")})
-    private Set<Author> authors = new HashSet<>();
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "book_category", joinColumns = {@JoinColumn(name = "book_id")}, inverseJoinColumns = {@JoinColumn(name = "category_id")})
-    private Set<Category> categories;
 
-    public Book(String title, Set <Author> authors, Set categories) {
-        this.title = title;
-        this.authors = authors;
-        this.categories = categories;
-    }
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("book")
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
+    @JsonIgnore
+    private Boolean archived = false;
+
+    public Book() {}
 
     public Integer getId() {
         return id;
@@ -46,19 +43,19 @@ public class Book {
         this.title = title;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
+    public Boolean getArchived() {
+        return archived;
     }
 
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
+    public void setArchived(Boolean archived) {
+        this.archived = archived;
     }
 
-    public Set<Author> getAuthors() {
-        return authors;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

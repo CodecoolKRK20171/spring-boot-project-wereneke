@@ -1,9 +1,8 @@
 package com.codecool.wereneke.library.author;
 
+import com.codecool.wereneke.library.common.NoSuchIdException;
 import com.codecool.wereneke.library.common.Service;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class AuthorService implements Service<Author> {
@@ -16,12 +15,15 @@ public class AuthorService implements Service<Author> {
 
     @Override
     public void create(Author author) {
-        this.authorRepository.save(author);
+        if (author.getId() == null) {
+            this.authorRepository.save(author);
+        }
     }
 
     @Override
     public void update(Author author) {
 
+        if (author.getId() != null) this.authorRepository.save(author);
     }
 
     @Override
@@ -30,10 +32,10 @@ public class AuthorService implements Service<Author> {
     }
 
     @Override
-    public Author findOne(int id) {
+    public Author findOne(Integer id) throws NoSuchIdException {
 
         Author author = this.authorRepository.findOne(id);
-        if (author == null); //raise custom exception
+        if (author == null) throw new NoSuchIdException();
         return author;
     }
 

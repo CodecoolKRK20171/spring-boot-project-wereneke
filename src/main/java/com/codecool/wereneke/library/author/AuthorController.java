@@ -1,5 +1,6 @@
 package com.codecool.wereneke.library.author;
 
+import com.codecool.wereneke.library.common.NoSuchIdException;
 import com.codecool.wereneke.library.common.Service;
 import com.codecool.wereneke.library.common.Controller;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +24,7 @@ public class AuthorController implements Controller<Author> {
     }
 
     @GetMapping("/{id}")
-    public Author show(@PathVariable Integer id) {
+    public Author show(@PathVariable Integer id) throws NoSuchIdException {
         return (Author) this.authorService.findOne(id);
     }
 

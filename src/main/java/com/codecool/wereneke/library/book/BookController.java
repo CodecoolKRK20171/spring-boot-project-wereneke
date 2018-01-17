@@ -1,6 +1,8 @@
 package com.codecool.wereneke.library.book;
 
 import com.codecool.wereneke.library.common.Controller;
+import com.codecool.wereneke.library.common.NoSuchIdException;
+import com.codecool.wereneke.library.common.Service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/books")
 public class BookController implements Controller<Book> {
 
-    private BookService bookService;
+    private Service bookService;
 
     public BookController(@Qualifier("bookService") BookService bookService) {
         this.bookService = bookService;
@@ -16,12 +18,18 @@ public class BookController implements Controller<Book> {
 
     @Override
     @GetMapping(path = "")
-    public Iterable<Book> index() {
+    public Iterable<Book> index() throws NoSuchIdException {
         return this.bookService.findAll();
+    }
+
+    @GetMapping(path = "/{id}")
+    public Book show(@PathVariable Integer id) throws NoSuchIdException{
+        return (Book) this.bookService.findOne(id);
     }
 
     @PostMapping(path = "")
     public Book create(@RequestBody Book book) {
-        return null;
+        this.bookService.create(book);
+        return book;
     }
 }
