@@ -23,6 +23,7 @@ public class AuthorService implements EntityService<Author> {
     @Override
     public Author create(Author author) {
 
+        loggerService.logInfo("Author was created");
             return this.authorRepository.save(author);
     }
 
@@ -33,6 +34,7 @@ public class AuthorService implements EntityService<Author> {
         if (author == null) throw new NoSuchIdException();
         author = newValues;
         author.setId(id);
+        loggerService.logInfo(String.format("Author %d was updated", id));
         return this.authorRepository.save(author);
     }
 
@@ -42,6 +44,7 @@ public class AuthorService implements EntityService<Author> {
         if (!this.authorRepository.exists(id)) throw new NoSuchIdException();
 
         Author author = this.authorRepository.findOne(id);
+        loggerService.logInfo(String.format("Author %d was deleted", id));
         this.authorRepository.delete(author);
 
     }
@@ -51,11 +54,13 @@ public class AuthorService implements EntityService<Author> {
 
         Author author = this.authorRepository.findOne(id);
         if (author == null) throw new NoSuchIdException();
+        loggerService.logInfo(String.format("Author %d were shown", id));
         return author;
     }
 
     @Override
     public Iterable<Author> findAll(boolean arch) {
+        loggerService.logInfo("Author's were shown");
         return this.authorRepository.findAll();
     }
 
@@ -68,7 +73,7 @@ public class AuthorService implements EntityService<Author> {
         for (Book book: books) {
             if (!book.getArchived()) unarchived.add(book);
         }
-        loggerService.logInfo("Books of author shown");
+        loggerService.logInfo(String.format("Books of author's %d shown", id));
         return unarchived;
     }
 }
