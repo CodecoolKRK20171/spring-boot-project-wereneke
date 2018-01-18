@@ -1,6 +1,6 @@
 package com.codecool.wereneke.library.common;
 
-public interface Service<T> {
+public interface EntityService<T> {
 
     T create(T obj);
     T update(Integer id, T obj) throws NoSuchIdException;

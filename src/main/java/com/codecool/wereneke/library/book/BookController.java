@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/books")
 public class BookController implements Controller<Book> {
 
-    private BookService bookService;
+    private BookEntityService bookService;
 
-    public BookController(BookService bookService) {
+    public BookController(BookEntityService bookService) {
         this.bookService = bookService;
     }
 

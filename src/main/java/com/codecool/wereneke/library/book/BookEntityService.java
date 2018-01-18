@@ -1,18 +1,18 @@
 package com.codecool.wereneke.library.book;
 
 import com.codecool.wereneke.library.common.NoSuchIdException;
-import com.codecool.wereneke.library.common.Service;
+import com.codecool.wereneke.library.common.EntityService;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class BookService implements Service<Book> {
+public class BookEntityService implements EntityService<Book> {
 
     private BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookEntityService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 

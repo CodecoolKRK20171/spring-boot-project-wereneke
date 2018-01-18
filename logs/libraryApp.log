@@ -1,0 +1,5 @@
+2018-01-18 22:06:31.315  INFO fe80:0:0:0:334:7b35:6010:f5e3%wlp3s0 --- [nio-8080-exec-6] c.c.w.l.LibraryApplication               : Authors shown
+2018-01-18 22:07:10.717  INFO fe80:0:0:0:334:7b35:6010:f5e3%wlp3s0 --- [nio-8080-exec-7] c.c.w.l.LibraryApplication               : Authors shown
+2018-01-18 22:12:24.989  INFO fe80:0:0:0:334:7b35:6010:f5e3%wlp3s0 --- [nio-8080-exec-1] c.c.w.l.LibraryApplication               : Books of author shown
+2018-01-18 22:15:39.820  INFO fe80:0:0:0:334:7b35:6010:f5e3%wlp3s0 --- [nio-8080-exec-1] c.c.w.l.LibraryApplication               : Books of author shown
+2018-01-18 22:24:39.717  INFO fe80:0:0:0:334:7b35:6010:f5e3%wlp3s0 --- [nio-8080-exec-2] c.c.w.l.LibraryApplication               : Books of author shown
